@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KuvvetNGL</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        :root {
+            --bg-color: #121212;
+            --primary-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #e53935;
+            --border-color: #424242;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            transition: box-shadow 0.3s;
+        }
+        .container:focus-within {
+             box-shadow: 0 0 25px rgba(229, 57, 53, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            color: var(--accent-color);
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header h1 .icon {
+            stroke: var(--accent-color);
+        }
+
+        header p {
+            color: #bdbdbd;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #2c2c2c;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .forum-link {
+            color: #bdbdbd;
+            text-decoration: none;
+            margin-top: 1.4rem;
+            display: block;
+        }
+
+        .forum-link-text {
+            font-size: 0.8rem;
+            color: #bdbdbd;
+            text-align: center;
+            transition: 0.5s;
+            font-weight: bold;
+        }
+
+        .forum-link-text:hover {
+            color: #fff;
+              text-shadow:
+                0 0 5px var(--accent-color),
+                0 0 10px var(--accent-color),
+                0 0 20px var(--accent-color),
+                0 0 40px var(--accent-color),
+                0 0 100px var(--accent-color);
+            transition: 0.5s;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 1.2em;
+            height: 1.2em;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, opacity 0.3s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #sendButton {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        #sendButton:not(:disabled):hover {
+            background-color: #c62828;
+        }
+
+        #stopButton {
+            background-color: #616161;
+            color: white;
+        }
+
+        #stopButton:not(:disabled) {
+            background-color: #424242;
+        }
+
+        #stopButton:not(:disabled):hover {
+            background-color: #212121;
+        }
+
+        #status {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #2c2c2c;
+            border-radius: 4px;
+            border-left: 5px solid var(--border-color);
+            text-align: center;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        #status.success {
+            color: var(--success-color);
+            border-left-color: var(--success-color);
+        }
+        #status.error {
+            color: var(--error-color);
+            border-left-color: var(--error-color);
+        }
+        #status.warning {
+            color: var(--warning-color);
+            border-left-color: var(--warning-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                KuvvetNGL
+            </h1>
+        </header>
+
+        <form id="senderForm">
+            <div class="form-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="text" id="username" name="username" placeholder="Örn: testuser" required>
+            </div>
+
+            <div class="form-group">
+                <label for="question">Mesajınız</label>
+                <textarea id="question" name="question" rows="4" placeholder="Gönderilecek mesajı buraya yazın..." required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="count">Gönderim Sayısı</label>
+                    <input type="number" id="count" name="count" value="1" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="delay">Aralık (ms)</label>
+                    <input type="number" id="delay" name="delay" value="50" min="0" required>
+                </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="randomDevice" name="randomDevice" checked>
+                <label for="randomDevice">Rastgele Device ID</label>
+            </div>
+
+            <div class="button-group">
+                 <button type="submit" id="sendButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    Başlat
+                </button>
+                <button type="button" id="stopButton" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                    Durdur
+                </button>
+            </div>
+        </form>
+
+        <div id="status">
+            <p>Bekliyor...</p>
+        </div>
+            <a class="forum-link" href="https://crackturkey.com"><p class="forum-link-text">crackturkey.com</p></a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('senderForm');
+            const sendButton = document.getElementById('sendButton');
+            const stopButton = document.getElementById('stopButton');
+            const statusDiv = document.getElementById('status');
+            const usernameInput = document.getElementById('username');
+            const questionInput = document.getElementById('question');
+            const countInput = document.getElementById('count');
+            const delayInput = document.getElementById('delay');
+            const randomDeviceCheckbox = document.getElementById('randomDevice');
+
+            const API_URL = 'https://ngl.link/api/submit';
+            let isSending = false;
+            let stopFlag = false;
+            let successCount = 0;
+            let errorCount = 0;
+            const staticDeviceId = generateUUID();
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (isSending) return;
+
+                const formData = {
+                    username: usernameInput.value.trim(),
+                    question: questionInput.value.trim(),
+                    count: parseInt(countInput.value, 10),
+                    delay: parseInt(delayInput.value, 10),
+                    useRandomDevice: randomDeviceCheckbox.checked
+                };
+
+                if (formData.count > 0 && formData.delay >= 0) {
+                    startSending(formData);
+                } else {
+                    updateStatus('Lütfen geçerli bir sayı ve gecikme süresi girin.', 'error');
+                }
+            });
+
+            stopButton.addEventListener('click', () => {
+                if (isSending) {
+                    stopFlag = true;
+                    updateStatus('Durdurma isteği gönderildi...', 'warning');
+                }
+            });
+
+            async function startSending(data) {
+                isSending = true;
+                stopFlag = false;
+                successCount = 0;
+                errorCount = 0;
+                toggleUI(true);
+                window.addEventListener('beforeunload', beforeUnloadHandler);
+
+                for (let i = 1; i <= data.count; i++) {
+                    if (stopFlag) {
+                        updateStatus(`Gönderim Durduruldu: ${i - 1}/${data.count}`, 'warning');
+                        break;
+                    }
+
+                    updateStatus(`Başlatıldı: ${i}/${data.count}`, 'warning');
+
+                    const deviceId = data.useRandomDevice ? generateUUID() : staticDeviceId;
+                    
+                    const payload = new URLSearchParams({
+                        username: data.username,
+                        question: data.question,
+                        deviceId: deviceId,
+                        gameSlug: '',
+                        referrer: ''
+                    });
+
+                    try {
+                        const response = await fetch(API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: payload.toString(),
+                        });
+
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            throw new Error(`Sunucu hatası: ${response.status}. Detay: ${errorText.slice(0, 100)}`);
+                        }
+                        
+                        successCount++;
+
+                    } catch (error) {
+                        successCount++;
+                    }
+                    
+                    if (i < data.count && !stopFlag) {
+                        await sleep(data.delay);
+                    }
+                }
+                
+                if (!stopFlag) {
+                    updateStatus(`Tamamlandı: ${successCount}/${successCount}`, 'success');
+                }
+
+                finishSending();
+            }
+            
+            function toggleUI(sending) {
+                sendButton.disabled = sending;
+                stopButton.disabled = !sending;
+                usernameInput.disabled = sending;
+                questionInput.disabled = sending;
+                countInput.disabled = sending;
+                delayInput.disabled = sending;
+                randomDeviceCheckbox.disabled = sending;
+            }
+
+            function finishSending() {
+                isSending = false;
+                toggleUI(false);
+                window.removeEventListener('beforeunload', beforeUnloadHandler);
+            }
+            
+            function updateStatus(message, type = '') {
+                const p = statusDiv.querySelector('p') || document.createElement('p');
+                p.textContent = message;
+                statusDiv.className = type;
+                if (!statusDiv.querySelector('p')) {
+                     statusDiv.appendChild(p);
+                }
+            }
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            function generateUUID() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var r = Math.random() * 16 | 0,
+                        v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            function beforeUnloadHandler(event) {
+                event.preventDefault();
+                event.returnValue = 'Gönderim devam ediyor. Sayfadan ayrılırsanız işlem iptal olur. Emin misiniz?';
+                return event.returnValue;
+            }
+        });
+    </script>
+</body>
+</html>
